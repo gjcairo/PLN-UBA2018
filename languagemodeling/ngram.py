@@ -40,6 +40,9 @@ class LanguageModel(object):
 
 class NGram(LanguageModel):
 
+    def add_beg_and_end_of_sentence_chars(self, sent):
+        return (["<s>"] * (self._n - 1)) + sent + ["</s>"]
+
     def __init__(self, n, sents):
         """
         n -- order of the model.
@@ -50,7 +53,11 @@ class NGram(LanguageModel):
 
         count = defaultdict(int)
 
-        # WORK HERE!!
+        for sent in sents:
+            sent = self.add_beg_and_end_of_sentence_chars(sent)
+            for i in range(len(sent) + 1 - self._n):
+                count[tuple(sent[i:i+self._n])] += 1
+                count[tuple(sent[i:i+self._n-1])] += 1
 
         self._count = dict(count)
 
@@ -67,18 +74,33 @@ class NGram(LanguageModel):
         token -- the token.
         prev_tokens -- the previous n-1 tokens (optional only if n = 1).
         """
-        # WORK HERE!!
+        if not prev_tokens:
+            prev_tokens = ()
+
+        ngram_count = self.count(prev_tokens + (token,))
+        return 0 if ngram_count == 0 else ngram_count / self.count(prev_tokens)
 
     def sent_prob(self, sent):
         """Probability of a sentence. Warning: subject to underflow problems.
 
         sent -- the sentence as a list of tokens.
         """
-        # WORK HERE!!
+        sent = self.add_beg_and_end_of_sentence_chars(sent)
+        prob = 1
+        for i in range(len(sent) + 1 - self._n):
+            ngram = tuple(sent[i:i+self._n])
+            prob *= self.cond_prob(ngram[-1], ngram[:-1])
+        return prob
 
     def sent_log_prob(self, sent):
         """Log-probability of a sentence.
 
         sent -- the sentence as a list of tokens.
         """
-        # WORK HERE!!
+        sent = self.add_beg_and_end_of_sentence_chars(sent)
+        sent_prob = 0
+        for i in range(len(sent) + 1 - self._n):
+            ngram = tuple(sent[i:i+self._n])
+            token_prob = self.cond_prob(ngram[-1], ngram[:-1])
+            sent_prob += math.log2(token_prob) if token_prob > 0 else -math.inf
+        return sent_prob

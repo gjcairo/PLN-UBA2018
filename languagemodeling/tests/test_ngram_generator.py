@@ -12,6 +12,7 @@ class TestNGramGenerator(TestCase):
             'el gato come pescado .'.split(),
             'la gata come salmón .'.split(),
         ]
+        self.maxDiff = None
 
     def test_init_1gram(self):
         ngram = NGram(1, self.sents)
