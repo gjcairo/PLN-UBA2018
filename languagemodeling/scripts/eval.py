@@ -12,7 +12,8 @@ from docopt import docopt
 import pickle
 import math
 
-from nltk.corpus import gutenberg
+from nltk.corpus.reader.plaintext import PlaintextCorpusReader
+from nltk.tokenize import RegexpTokenizer
 
 
 if __name__ == '__main__':
@@ -25,8 +26,17 @@ if __name__ == '__main__':
     f.close()
 
     # load the data
-    # WORK HERE!! LOAD YOUR EVALUATION CORPUS
-    sents = gutenberg.sents('austen-persuasion.txt')
+    pattern = r'''(?x)    # set flag to allow verbose regexps
+       (?:\d{1,3}(?:\.\d{3})+)  # numbers with '.' in the middle
+       | (?:[A-Z]\.)+        # abbreviations, e.g. U.S.A.
+       | \w+(?:-\w+)*        # words with optional internal hyphens
+       | \$?\d+(?:\.\d+)?%?  # currency and percentages, e.g. $12.40, 82%
+       | \.\.\.            # ellipsis
+       | [][.,;?'"():-_`]  # these are separate tokens
+    '''
+
+    tokenizer = RegexpTokenizer(pattern)
+    sents = PlaintextCorpusReader('.', 'jokes_test.txt', word_tokenizer=tokenizer).sents()
 
     # compute the cross entropy
     log_prob = model.log_prob(sents)

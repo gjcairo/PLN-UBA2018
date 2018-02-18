@@ -17,16 +17,16 @@ from docopt import docopt
 import pickle
 
 from nltk.corpus.reader.plaintext import PlaintextCorpusReader
-from languagemodeling.ngram import NGram
 from nltk.tokenize import RegexpTokenizer
+from languagemodeling.ngram import NGram, AddOneNGram
 # from languagemodeling.ngram import NGram, AddOneNGram, InterpolatedNGram
 
 
-# models = {
-#     'ngram': NGram,
-#     'addone': AddOneNGram,
-#     'inter': InterpolatedNGram,
-# }
+models = {
+    'ngram': NGram,
+    'addone': AddOneNGram,
+    #'inter': InterpolatedNGram,
+}
 
 
 if __name__ == '__main__':
@@ -43,13 +43,13 @@ if __name__ == '__main__':
     '''
 
     tokenizer = RegexpTokenizer(pattern)
-    sents = PlaintextCorpusReader('.', 'jokes.txt', word_tokenizer=tokenizer).sents()
+    sents = PlaintextCorpusReader('.', 'jokes_train.txt', word_tokenizer=tokenizer).sents()
 
     # train the model
     n = int(opts['-n'])
     model = NGram(n, sents)
-    # model_class = models[opts['-m']]
-    # model = model_class(n, sents)
+    model_class = models[opts['-m']]
+    model = model_class(n, sents)
 
     # save it
     filename = opts['-o']
