@@ -18,14 +18,13 @@ import pickle
 
 from nltk.corpus.reader.plaintext import PlaintextCorpusReader
 from nltk.tokenize import RegexpTokenizer
-from languagemodeling.ngram import NGram, AddOneNGram
-# from languagemodeling.ngram import NGram, AddOneNGram, InterpolatedNGram
+from languagemodeling.ngram import NGram, AddOneNGram, InterpolatedNGram
 
 
 models = {
     'ngram': NGram,
     'addone': AddOneNGram,
-    #'inter': InterpolatedNGram,
+    'inter': InterpolatedNGram,
 }
 
 

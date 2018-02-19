@@ -169,15 +169,22 @@ class InterpolatedNGram(NGram):
             held_out_sents = sents[m:]
 
         print('Computing counts...')
-        # WORK HERE!!
-        # COMPUTE COUNTS FOR ALL K-GRAMS WITH K <= N
+        count = dict()
+        for k in range(1, self._n + 1):
+            ngram = NGram(k, train_sents)
+            count.update(ngram._count)
+        self._count = dict(count)
 
         # compute vocabulary size for add-one in the last step
         self._addone = addone
         if addone:
             print('Computing vocabulary...')
             self._voc = voc = set()
-            # WORK HERE!!
+
+            for ngram in self._count.keys():
+                for word in ngram:
+                    if word != "<s>":
+                        voc.add(word)
 
             self._V = len(voc)
 
@@ -189,8 +196,7 @@ class InterpolatedNGram(NGram):
             # use grid search to choose gamma
             min_gamma, min_p = None, float('inf')
 
-            # WORK HERE!! TRY DIFFERENT VALUES BY HAND:
-            for gamma in [100 + i * 50 for i in range(10)]:
+            for gamma in [10 + i * 10 for i in range(20)]:
                 self._gamma = gamma
                 p = self.perplexity(held_out_sents)
                 print('  {} -> {}'.format(gamma, p))
@@ -206,7 +212,7 @@ class InterpolatedNGram(NGram):
 
         tokens -- the k-gram tuple.
         """
-        # WORK HERE!! (JUST A RETURN STATEMENT)
+        return self._count.get(tokens, 0)
 
     def cond_prob(self, token, prev_tokens=None):
         """Conditional probability of a token.
@@ -220,20 +226,20 @@ class InterpolatedNGram(NGram):
             prev_tokens = ()
         assert len(prev_tokens) == n - 1
 
-        # WORK HERE!!
-        # SUGGESTED STRUCTURE:
         tokens = prev_tokens + (token,)
         prob = 0.0
         cum_lambda = 0.0  # sum of previous lambdas
         for i in range(n):
             # i-th term of the sum
             if i < n - 1:
-                # COMPUTE lambdaa AND cond_ml.
-                pass
+                lambdaa = (1 - cum_lambda) * (self.count(tokens[i:-1]) / (self.count(tokens[i:-1]) + self._gamma))
+                cond_ml = super(type(self), self).cond_prob(tokens[-1], tokens[i:-1])
             else:
-                # COMPUTE lambdaa AND cond_ml.
-                # LAST TERM: USE ADD ONE IF NEEDED!
-                pass
+                lambdaa = (1 - cum_lambda)
+                if self._addone:
+                    cond_ml = (self.count(tokens) + 1) / (self.count(tokens[:-1]) + self._V)
+                else:
+                    cond_ml = super(type(self), self).cond_prob(tokens[-1], tokens[i:-1])
 
             prob += lambdaa * cond_ml
             cum_lambda += lambdaa
