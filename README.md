@@ -1,3 +1,6 @@
+# NOTA
+Por una cuestión de tamaños de archivos, los modelos entrenados no están subidos al repo. De necesitarlos, se encuentran en: https://drive.google.com/drive/folders/1oV57LS2_DZXb65voC9s2ZgdFIjKfNSVy?usp=sharing
+
 # Ejercicio 1
 
 ## Basic Statistics
