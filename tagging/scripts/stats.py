@@ -21,55 +21,70 @@ class POSStats:
         """
         tagged_sents -- corpus (list/iterable/generator of tagged sentences)
         """
-        # WORK HERE!!
-        # COLLECT REQUIRED STATISTICS INTO DICTIONARIES.
+        self.tagged_sents_count = 0
+        self.tokens_count = 0
+        self.tag_words = defaultdict(lambda: defaultdict(int))
+        self.word_tags = defaultdict(set)
+        self.word_counts = defaultdict(int)
+
+        for sent in tagged_sents:
+            self.tagged_sents_count += 1
+            self.tokens_count += len(sent)
+            for word, tag in sent:
+                self.tag_words[tag][word] += 1
+                self.word_tags[word].add(tag)
+                self.word_counts[word] += 1
+
+        self.tag_words = dict(self.tag_words)
+        self.word_tags = dict(self.word_tags)
+        self.word_counts = dict(self.word_counts)
 
     def sent_count(self):
         """Total number of sentences."""
-        # WORK HERE!!
+        return self.tagged_sents_count
 
     def token_count(self):
         """Total number of tokens."""
-        # WORK HERE!!
+        return self.tokens_count
 
     def words(self):
         """Vocabulary (set of word types)."""
-        # WORK HERE!!
+        return list(self.word_tags.keys())
 
     def word_count(self):
         """Vocabulary size."""
-        # WORK HERE!!
+        return len(self.words())
 
     def word_freq(self, w):
         """Frequency of word w."""
-        # WORK HERE!!
+        return self.word_counts[w] / self.token_count()
 
     def unambiguous_words(self):
         """List of words with only one observed POS tag."""
-        # WORK HERE!!
+        return self.ambiguous_words(1)
 
     def ambiguous_words(self, n):
         """List of words with n different observed POS tags.
 
         n -- number of tags.
         """
-        # WORK HERE!!
+        return list(filter(lambda tags: len(tags) == n, self.word_tags))
 
     def tags(self):
         """POS Tagset."""
-        # WORK HERE!!
+        return list(self.tag_words.keys())
 
     def tag_count(self):
         """POS tagset size."""
-        # WORK HERE!!
+        return len(self.tags())
 
     def tag_freq(self, t):
         """Frequency of tag t."""
-        # WORK HERE!!
+        return sum(self.tag_words[t].values()) / self.tag_count()
 
     def tag_word_dict(self, t):
         """Dictionary of words and their counts for tag t."""
-        return dict(self._tcount[t])
+        return dict(self.tag_words[t])
 
 
 if __name__ == '__main__':
