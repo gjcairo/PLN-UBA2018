@@ -26,18 +26,33 @@ class MEMM:
         tagged_sents -- list of sentences, each one being a list of pairs.
         clf -- classifying model, one of 'svm', 'maxent', 'mnb' (default: 'svm').
         """
+        self._n = n
+
         # 1. build the pipeline
-        # WORK HERE!!
-        self._pipeline = pipeline = None
+        nprev = NPrevTags(n)
+        prev_lower = PrevWord(word_lower)
+        prev_istitle = PrevWord(word_istitle)
+        prev_isdigit = PrevWord(word_isdigit)
+        next_lower = NextWord(word_lower)
+        next_istitle = NextWord(word_istitle)
+        next_isdigit = NextWord(word_isdigit)
+        features = [word_lower, word_istitle, word_isupper, word_isdigit, nprev, prev_lower, prev_istitle, prev_isdigit, next_lower, next_istitle, next_isdigit]
+        vect = Vectorizer(features)
+
+        self._pipeline = pipeline = Pipeline([('vect', vect), ('clf', classifiers[clf]())])
 
         # 2. train it
         print('Training classifier...')
-        X = self.sents_histories(tagged_sents)
-        y = self.sents_tags(tagged_sents)
+        tagged_sents_list = list(tagged_sents)
+        X = self.sents_histories(tagged_sents_list)
+        y = self.sents_tags(tagged_sents_list)
         pipeline.fit(list(X), list(y))
 
         # 3. build known words set
-        # WORK HERE!!
+        self._words = set()
+        for h in X:
+            for w in h.sent:
+                self._words.add(w)
 
     def sents_histories(self, tagged_sents):
         """
@@ -55,7 +70,7 @@ class MEMM:
 
         tagged_sent -- the tagged sentence (a list of pairs (word, tag)).
         """
-        prev_tags = ('<s>',) * (self.n - 1)
+        prev_tags = ('<s>',) * (self._n - 1)
         sent = [w for w, _ in tagged_sent]
         for i, (w, t) in enumerate(tagged_sent):
             yield History(sent, prev_tags, i)
@@ -84,18 +99,25 @@ class MEMM:
 
         sent -- the sentence.
         """
-        # WORK HERE!!
+        tags = []
+        prev = ('<s>',) * (self._n - 1)
+        for i, w in enumerate(sent):
+            h = History(sent, prev, i)
+            tag = self.tag_history(h)
+            tags.append(tag)
+            prev = (prev + (tag,))[1:]
+        return tags
 
     def tag_history(self, h):
         """Tag a history.
 
         h -- the history.
         """
-        # WORK HERE!!
+        return self._pipeline.predict([h])[0]
 
     def unknown(self, w):
         """Check if a word is unknown for the model.
 
         w -- the word.
         """
-        # WORK HERE!!
+        return w not in self._words
