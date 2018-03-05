@@ -1,7 +1,7 @@
 """Train a Sentiment Analysis model.
 
 Usage:
-  train.py [-m <model>] [-c <clf>] -o <file>
+  train.py [-m <model>] [-c <clf>] [-e <enhancement>] -o <file>
   train.py -h | --help
 
 Options:
@@ -12,6 +12,12 @@ Options:
                   maxent: Maximum Entropy (i.e. Logistic Regression)
                   svm: Support Vector Machine
                   mnb: Multinomial Bayes
+  -e <enhancement>  Enhancement to use when using clf [default: None]:
+                      tokenizer: Use NLTK's word_tokenize instead of CountVectorizer
+                      binary: Ignore word repetition
+                      stopwords: Ignore spanish stop words
+                      stemmer: Finds stems of words
+                      normalize: Remove mentions and URLs, and remove vowels repeated 3+ times
   -o <file>    Output model file.
   -h --help     Show this screen.
 """
@@ -42,7 +48,7 @@ if __name__ == '__main__':
     # train model
     model_type = opts['-m']
     if model_type == 'clf':
-        model = models[model_type](clf=opts['-c'])
+        model = models[model_type](clf=opts['-c'], enhancement=opts['-e'])
     else:
         model = models[model_type]()  # baseline
 

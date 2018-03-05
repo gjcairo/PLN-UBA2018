@@ -1,7 +1,7 @@
 """Draw a learning curve for a Sentiment Analysis model.
 
 Usage:
-  curve.py [-m <model>] [-c <clf>]
+  curve.py [-m <model>] [-c <clf>] [-e <enhancement>]
   curve.py -h | --help
 
 Options:
@@ -12,6 +12,13 @@ Options:
                   maxent: Maximum Entropy (i.e. Logistic Regression)
                   svm: Support Vector Machine
                   mnb: Multinomial Bayes
+  -e <enhancement>  Enhancement to use when using clf [default: None]:
+                      tokenizer: Use NLTK's word_tokenize instead of CountVectorizer
+                      binary: Ignore word repetition
+                      stopwords: Ignore spanish stop words
+                      stemmer: Finds stems of words
+                      normalize: Remove mentions and URLs, and remove vowels repeated 3+ times
+  -o <file>    Output model file.
   -h --help     Show this screen.
 """
 from docopt import docopt
@@ -46,7 +53,7 @@ if __name__ == '__main__':
     # train model
     model_type = opts['-m']
     if model_type == 'clf':
-        model = models[model_type](clf=opts['-c'])
+        model = models[model_type](clf=opts['-c'], enhancement=opts['-e'])
     else:
         model = models[model_type]()  # baseline
     evaluator = Evaluator()
@@ -66,3 +73,6 @@ if __name__ == '__main__':
         acc = evaluator.accuracy()
         f1 = evaluator.macro_f1()
         print('n={}, acc={:2.2f}, f1={:2.2f}'.format(n, acc, f1))
+
+    if model_type == 'clf':
+      model.print_stats(X[104])
