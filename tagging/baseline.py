@@ -43,6 +43,7 @@ class BaselineTagger:
         for sent in tagged_sents:
             for word, tag in sent:
                 self.word_tags_count[word][tag] += 1
+        self.word_tags_count = dict(self.word_tags_count)
 
     def tag(self, sent):
         """Tag a sentence.
@@ -65,4 +66,4 @@ class BaselineTagger:
 
         w -- the word.
         """
-        return w not in self.word_tags_count
+        return w not in self.word_tags_count.keys()

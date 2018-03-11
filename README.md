@@ -1,7 +1,20 @@
 # NOTA
 Por una cuestión de tamaños de archivos, los modelos entrenados no están subidos al repo. De necesitarlos, se encuentran en: https://drive.google.com/drive/folders/1oV57LS2_DZXb65voC9s2ZgdFIjKfNSVy?usp=sharing
 
-# Ejercicio 1
+
+Word Ambiguity Levels
+=====================
+n words % top
+1 43972 94.56 (,, con, por, su, El)
+2 2318  4.98  (el, en, y, ", los)
+3 180 0.39  (de, la, ., un, no)
+4 23  0.05  (que, a, dos, este, fue)
+5 5 0.01  (mismo, cinco, medio, ocho, vista)
+6 3 0.01  (una, como, uno)
+7 0 0.00  ()
+8 0 0.00  ()
+9 0 0.00  ()
+
 
 ## Basic Statistics
 ================
@@ -12,39 +25,39 @@ tags: 85
 
 ## Most Frequent POS Tags
 ======================
-| tag     | freq               | %    | top                                       | 
-|---------|--------------------|------|-------------------------------------------| 
-| sp000   | 939.8117647058823  | 0.18 | (de, en, a, del, con)                     | 
-| nc0s000 | 746.4941176470588  | 0.14 | (presidente, equipo, partido, país, año)  | 
-| da0000  | 641.7529411764706  | 0.12 | (la, el, los, las, El)                    | 
-| aq0000  | 398.8941176470588  | 0.08 | (pasado, gran, mayor, nuevo, próximo)     | 
-| fc      | 354.67058823529413 | 0.07 | (,)                                       | 
-| np00000 | 342.4823529411765  | 0.07 | (Gobierno, España, PP, Barcelona, Madrid) | 
-| nc0p000 | 326.3058823529412  | 0.06 | (años, millones, personas, países, días)  | 
-| fp      | 206.0235294117647  | 0.04 | (.)                                       | 
-| rg      | 180.42352941176472 | 0.03 | (más, hoy, también, ayer, ya)             | 
-| cc      | 176.74117647058824 | 0.03 | (y, pero, o, Pero, e)                     | 
+| tag     | freq               | %     | top                                       | 
+|---------|--------------------|-------|-------------------------------------------| 
+| sp000   | 79884              | 15.45 | (de, en, a, del, con)                     | 
+| nc0s000 | 63452              | 12.27 | (presidente, equipo, partido, país, año)  | 
+| da0000  | 54549              | 10.55 | (la, el, los, las, El)                    | 
+| aq0000  | 33906              | 6.56  | (pasado, gran, mayor, nuevo, próximo)     | 
+| fc      | 30147              | 5.83  | (,)                                       | 
+| np00000 | 29111              | 5.63  | (Gobierno, España, PP, Barcelona, Madrid) | 
+| nc0p000 | 27736              | 5.36  | (años, millones, personas, países, días)  | 
+| fp      | 17512              | 3.39  | (.)                                       | 
+| rg      | 15336              | 2.97  | (más, hoy, también, ayer, ya)             | 
+| cc      | 15023              | 2.90  | (y, pero, o, Pero, e)                     | 
 
 
 
 ## Word Ambiguity Levels
 =====================
-| n | words | %     | top                                                     | 
-|---|-------|-------|---------------------------------------------------------| 
-| 1 | 51    | 0.11  | (,, ., y, ", a)                                         | 
-| 2 | 266   | 0.57  | (de, la, el, en, un)                                    | 
-| 3 | 962   | 2.07  | (que, los, del, las, con)                               | 
-| 4 | 1701  | 3.66  | (para, como, pero, años, este)                          | 
-| 5 | 3225  | 6.94  | (entre, sobre, desde, hasta, tiene)                     | 
-| 6 | 4260  | 9.16  | (porque, cuando, pasado, equipo, contra)                | 
-| 7 | 5531  | 11.89 | (también, partido, durante, después, pesetas)           | 
-| 8 | 5752  | 12.37 | (millones, Gobierno, política, ministro, personas)      | 
-| 9 | 5353  | 11.51 | (Barcelona, situación, jugadores, problemas, electoral) | 
+| n | words | %     | top                                | 
+|---|-------|-------|------------------------------------| 
+| 1 | 43972 | 94.56 | (,, con, por, su, El)              | 
+| 2 | 2318  | 4.98  | (el, en, y, ", los)                | 
+| 3 | 180   | 0.39  | (de, la, ., un, no)                | 
+| 4 | 23    | 0.05  | (que, a, dos, este, fue)           | 
+| 5 | 5     | 0.01  | (mismo, cinco, medio, ocho, vista) | 
+| 6 | 3     | 0.01  | (una, como, uno)                   | 
+| 7 | 0     | 0.00  | ()                                 | 
+| 8 | 0     | 0.00  | ()                                 | 
+| 9 | 0     | 0.00  | ()                                 | 
 
 
 # Ejercicio 2
 
-+ Accuracy: 12.65%
++ Accuracy: 87.58%
 
 # Ejercicio 4
 

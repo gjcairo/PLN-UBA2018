@@ -57,7 +57,7 @@ class POSStats:
 
     def word_freq(self, w):
         """Frequency of word w."""
-        return self.word_counts[w] / self.token_count()
+        return self.word_counts[w]
 
     def unambiguous_words(self):
         """List of words with only one observed POS tag."""
@@ -68,7 +68,8 @@ class POSStats:
 
         n -- number of tags.
         """
-        return list(filter(lambda tags: len(tags) == n, self.word_tags))
+        ambiguous_word_tags = filter(lambda word_tags: len(word_tags[1]) == n, self.word_tags.items())
+        return [w for w, _ in ambiguous_word_tags]
 
     def tags(self):
         """POS Tagset."""
@@ -80,7 +81,7 @@ class POSStats:
 
     def tag_freq(self, t):
         """Frequency of tag t."""
-        return sum(self.tag_words[t].values()) / self.tag_count()
+        return sum(self.tag_words[t].values())
 
     def tag_word_dict(self, t):
         """Dictionary of words and their counts for tag t."""
